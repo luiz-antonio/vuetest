@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>With diretives, methods </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Luiz Antonio Garcia Simoes">
+        <meta name="description" content="Vue - teste.">
+        <meta name="keywords" content="vue, test">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+        
+    </head>
+    <body>
+        <div id="root">{{name}}
+            <h1 v-show="heading">{{title}}</h1>
+            <h1 v-if="heading">Heading OK</h1>
+            <h1 v-else>Sem heading</h1>
+            <li v-for="(currentName, idx) in names">
+                {{idx.toString()}}:{{currentName.name}}
+            </li>
+            <li v-for="i in 11">
+                {{i}} X 4 ={{i * 4}}.
+            </li>
+            <form v-on:submit.prevent="submitHandle">
+                <button>Submit</button>
+            </form>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript">
+            alert("passei");
+            var App = new Vue({
+                el: "#root",
+                data: {
+                    name: "Myname",
+                    title: "MyTitle",
+                    heading: false,
+                    names: [{name:"João"}, 
+                        {name: "José"}, 
+                        {name: "Joaquim"}],
+                    submitHandle: function() {
+                        alert(1);
+                    }
+                }
+            });
+            App.name = "OtherName";
+        </script>
+    </body>
+</html>
