@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>data binding message </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Luiz Antonio Garcia Simoes">
+        <meta name="description" content="Vue - teste.">
+        <meta name="keywords" content="vue, test">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+        
+    </head>
+    <body>
+        <div id="app">
+           <h1>{{message}} </h1><input v-model="message">
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript">
+            var App = new Vue({
+                el: "#app",
+                data: {
+                    message: "Olá"
+                }
+            });
+            
+        </script>
+    </body>
+</html>

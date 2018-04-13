@@ -1,0 +1,48 @@
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>component with props </title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Luiz Antonio Garcia Simoes">
+        <meta name="description" content="Vue - teste.">
+        <meta name="keywords" content="vue, test">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+        
+    </head>
+    <body>
+        <div id="app">
+           <hello message="Sign in please"></hello> 
+        </div>
+        <template id="hello-world">
+            <div>
+                <h1>Hello World!</h1>
+                <p>
+                    {{message}}
+                </p>
+                <button v-on:click="alert">Click Me</button>
+            </div>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript">
+            Vue.component("hello",{
+                template: "#hello-world",
+                props: ["message"],
+                methods: {
+                    alert: function() {
+                        alert(1);
+                    }
+                }
+            });
+            var App = new Vue({
+                el: "#app",
+                data: {
+                    message: "Olá"
+                }
+            });
+            
+        </script>
+    </body>
+</html>
