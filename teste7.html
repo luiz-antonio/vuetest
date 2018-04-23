@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chat App</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="author" content="Luiz Antonio Garcia Simoes">
+        <meta name="description" content="Vue - teste.">
+        <meta name="keywords" content="vue, test">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style type="text/css">
+        body {
+            margin:20px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="root">
+           <div>
+                <h1>{{appName}}</h1>
+                <messages :removemessage="removemessage" :chat="messages"></messages>
+                <chatform :totalmessages="messages.length" :save="save"></chatform>
+           </div> 
+        </div>
+        <template id="messages-list">
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="m, index in chat">
+                        <messageitem :message="m"></messageitem>
+                        <removemessage :removemessagefunction="removemessage"></removemessage>
+                        <span style="position:relative; left: -50px" class="pull-right">
+                            Date: {{getRelativeTime(m.time)}}
+                        </span> 
+                    </li>
+                    <div v-if="chat.length == 0">
+                        <div class="alert alert-info">
+                            <p>
+                                No Messages
+                            </p>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </template>
+       <template id="remove_message">
+           <span>
+               <a v-on:click="removemessagefunction()" class="close">&nbsp;X</a>
+           </span>
+       </template>
+       <template id = "message-item">
+           <span>{{message.text}}</span>
+       </template>
+       <template id="chat-form">
+           <div>
+               <form v-on:submit.prevent="save(message), empty()">
+                   <label>Your message</label>
+                   <input v-model="message" type="text" class="form-control" ></input>
+                   <div v-if="hasErrors" class="alert alert-danger">
+                       <p>
+                           Please enter the message.
+                       </p>
+                   </div>
+                   <button class="btn btn-info">Send</button>
+                   <span class="pull-right badge badge-info">
+                       {{totalmessages}}
+                   </span>
+               </form>
+           </div>
+       </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript">
+            var messagesList = Vue.component("messages",{
+                template: "#messages-list",
+                props: ['chat', "removemessage"],
+                methods: {
+                    getRelativeTime: function (timeStamp) {
+                        var now = new Date(),
+                            secondsPast = (now.getTime() - timeStamp.getTime()) / 1000;
+                        if (secondsPast < 60) {
+                            return parseInt(secondsPast) + ' Seconds Ago';
+                        }
+                        if (secondsPast < 3600) {
+                            return parseInt(secondsPast / 60) + ' Minutes Ago';
+                        }
+                        if (secondsPast <= 86400) {
+                            return parseInt(secondsPast/3600) + ' Hours Ago';
+                        }
+                        if (secondsPast > 86400) {
+                            day = timeStamp.getDate();
+                            month = timeStamp.toDateString().match(/[a-zA-Z]/)[0].replace(" ", "");
+                            year = timestamp.getFullYear() == now.getFullYear() ? "" : " " + timeStamp.getFullYear();
+                            return day + month + year;
+                        }
+                    }
+
+                }
+            });
+            var removemessage = Vue.component("removemessage", {
+                template: "#remove_message",
+                props: ["removemessagefunction"],
+            });
+            var messageItem = Vue.component("messageitem", {
+                template: "#message-item",
+                props: ["message"]
+            });
+            var chatForm = Vue.component("chatform", {
+                template: "#chat-form",
+                props: ["save", "totalmessages"],
+                data: function(){
+                    return {
+                        message: "",
+                        hasErrors: false
+                    }
+                },
+                methods: {
+                    empty: function() {
+                        if (this.message) {
+                            this.message = "";
+                            this.hasErrors = false;
+                        } else {
+                            this.hasErrors = true;
+                        }
+                    }
+                }
+            });
+            var ChatApp = new Vue({
+                el: "#root",
+                data: {
+                    appName: "Welcome to chat App",
+                    messages: [
+                        {text: "Hi, who are you?", time: new Date()},
+                        {text: "I'm fine!", time: new Date()},
+                        {text: "I'm fine!", time: new Date()}
+                    ]
+                },
+                methods: {
+                    save: function(message){
+                        if (message) this.messages.push( {text: message, time: new Date()});
+                    },
+                    removemessage: function(index){
+                        this.messages.splice(index, 1);
+                    }
+                }
+            });
+            
+        </script>
+    </body>
+</html>
